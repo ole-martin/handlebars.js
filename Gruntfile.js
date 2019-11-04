@@ -216,7 +216,6 @@ module.exports = function(grunt) {
   // Build a new version of the library
   this.registerTask('build', 'Builds a distributable version of the current project', [
                     'eslint',
-                    'bgShell:checkTypes',
                     'parser',
                     'node',
                     'globals']);
@@ -250,6 +249,7 @@ module.exports = function(grunt) {
   grunt.registerTask('travis', process.env.PUBLISH ? ['default', 'bgShell:integrationTests', 'sauce', 'metrics', 'publish:latest'] : ['default']);
 
   grunt.registerTask('dev', ['clean', 'connect', 'watch']);
-  grunt.registerTask('default', ['clean', 'build', 'test', 'release']);
+  grunt.registerTask('default', ['clean', 'build', 'test', 'bgShell:checkTypes', 'release']);
   grunt.registerTask('integration-tests', ['default', 'bgShell:integrationTests']);
 };
+

@@ -136,12 +136,6 @@ describe('security issues', function() {
         });
 
         it('access can be allowed via the compile-option "propertyMustBeEnumerable"', function() {
-            var template = compileWithPartials('{{__defineGetter__}}{{__defineSetter__}}', [{}, {}, {}, {
-                propertyMustBeEnumerable: {
-                    __defineGetter__: false
-                }
-            }]);
-
             var context = {};
             ['__defineGetter__', '__defineSetter__'].forEach(function(property) {
                 Object.defineProperty(context, property, {
@@ -152,8 +146,13 @@ describe('security issues', function() {
                 });
             });
 
-            var result = template(context);
-            equals(result, '__defineGetter__');
+            var compileOptions = {
+                propertyMustBeEnumerable: {
+                    __defineGetter__: false
+                }
+            };
+
+            shouldCompileTo('{{__defineGetter__}}{{__defineSetter__}}', [context, {}, {}, compileOptions], '__defineGetter__');
         });
     });
 });
